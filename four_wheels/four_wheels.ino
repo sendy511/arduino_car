@@ -16,17 +16,68 @@ void setup()
   {
     pinMode(i, OUTPUT);
   }
-  go();
+  stopCar();
+//  go();
+  initBlueTooth();
+}
+
+void initBlueTooth()
+{
+  Serial.begin(9600);
+  Serial1.begin(9600);
+  pinMode(13, OUTPUT);
+}
+
+char command;
+
+char getCommand()
+{
+  String input;
+  char command = 0;
+  while(Serial1.available() > 0)
+  {
+    input += char(Serial1.read());
+    digitalWrite(13, LOW);
+  }
+  Serial.println(input);
+    Serial.println(input[1]);
+
+  command = input[1];
+  
+  if ( command == 'F')
+  {
+    Serial.println("adsfasdfasdf");
+  }
+  
+  delay(500);
+  
+  Serial.println(command);
+  
+  return command;
 }
 
 void loop() 
 {
+  char command = getCommand();
+  
+  //Serial.println(command);
+  
+  if (command == 'F')
+  {
+    go();
+  }
+  
+  if (command == 'S')
+  {
+    stopCar();
+  }
+  
   //turn_left();
   
   //go();
   
-  left_speed(60);
-  right_speed(255);
+  //left_speed(60);
+  //right_speed(255);
 }
 
 void go()
@@ -42,6 +93,20 @@ void turn_left()
 {
   wheel_stop(1);
   wheel_stop(3);
+}
+
+void turn_right()
+{
+  wheel_stop(2);
+  wheel_stop(4);
+}
+
+void stopCar()
+{
+   wheel_stop(1);
+   wheel_stop(2);
+   wheel_stop(3);
+   wheel_stop(4);
 }
 
 void wheel_stop(int wheelNumber)
