@@ -39,19 +39,10 @@ char getCommand()
     input += char(Serial1.read());
     digitalWrite(13, LOW);
   }
-  Serial.println(input);
-    Serial.println(input[1]);
-
+  
   command = input[1];
-  
-  if ( command == 'F')
-  {
-    Serial.println("adsfasdfasdf");
-  }
-  
-  delay(500);
-  
-  Serial.println(command);
+ 
+  delay(100);
   
   return command;
 }
@@ -59,8 +50,6 @@ char getCommand()
 void loop() 
 {
   char command = getCommand();
-  
-  //Serial.println(command);
   
   if (command == 'F')
   {
@@ -72,12 +61,20 @@ void loop()
     stopCar();
   }
   
-  //turn_left();
+  if (command == 'L')
+  {
+    turn_left();
+  }
   
-  //go();
+  if (command == 'R')
+  {
+    turn_right();
+  }
   
-  //left_speed(60);
-  //right_speed(255);
+  if (command == 'B')
+  {
+    back();
+  }
 }
 
 void go()
@@ -89,16 +86,25 @@ void go()
    }
 }
 
+void back()
+{
+   for(int i = 0; i < 4; i++)
+   {
+     digitalWrite(wheels_2[i], HIGH);
+     digitalWrite(wheels_1[i], LOW);
+   }  
+}
+
 void turn_left()
 {
-  wheel_stop(1);
-  wheel_stop(3);
+  left_speed(100);
+  right_speed(255);
 }
 
 void turn_right()
 {
-  wheel_stop(2);
-  wheel_stop(4);
+  left_speed(255);
+  right_speed(100);
 }
 
 void stopCar()
